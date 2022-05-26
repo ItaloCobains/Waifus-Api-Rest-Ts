@@ -1,45 +1,26 @@
 // External Dependencies
-import express, { Request, Response } from "express";
-import { ObjectId } from "mongoDB";
-import { collections } from "../services/database.service";
-import Waifu from "../models/waifus";
+import express from "express";
+import * as ApiController from "../controllers/apiController";
 // Global Config
 export const waifuRouter = express.Router();
 
 waifuRouter.use(express.json());
 // GET
 
-waifuRouter.get("/ping", async (req: Request, res: Response) => {
-  res.status(200).json({ pong: true });
-});
+waifuRouter.get("/", ApiController.home);
 
-waifuRouter.get("/", async (req: Request, res: Response) => {
-  try {
-    let waifus = await collections.waifus?.find({}).toArray();
+waifuRouter.get("/ping", ApiController.getPing);
 
-    res.status(200).send(waifus);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+waifuRouter.get("/allwaifus", ApiController.getAllWaifus);
 
-waifuRouter.get("/:id", async (req: Request, res: Response) => {
-  const id = req?.params?.id;
+waifuRouter.get("/waifu/:id", ApiController.getWaifu);
 
-  try {
-    const query = { _id: new ObjectId(id) };
-    const waifu = await collections.waifus?.findOne(query);
-
-    if (waifu) {
-      res.status(200).send(waifu);
-    }
-  } catch (error) {
-    res
-      .status(404)
-      .send(`Unable to find matching document with id: ${req.params.id}`);
-  }
-});
 // POST
-// PUT
 
+waifuRouter.post("/waifu", ApiController.createNewWaifu);
+
+// PUT
+waifuRouter.put("/waifu/:id", ApiController.updateWaifu);
 // DELETE
+
+waifuRouter.delete("/waifu/:id", ApiController.deleteWaifu)
