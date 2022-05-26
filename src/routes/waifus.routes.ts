@@ -8,6 +8,11 @@ export const waifuRouter = express.Router();
 
 waifuRouter.use(express.json());
 // GET
+
+waifuRouter.get("/ping", async (req: Request, res: Response) => {
+  res.status(200).json({ pong: true });
+});
+
 waifuRouter.get("/", async (req: Request, res: Response) => {
   try {
     let waifus = await collections.waifus?.find({}).toArray();
@@ -35,7 +40,6 @@ waifuRouter.get("/:id", async (req: Request, res: Response) => {
   }
 });
 // POST
-
 // PUT
 
 // DELETE

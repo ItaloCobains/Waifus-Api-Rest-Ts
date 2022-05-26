@@ -2,7 +2,8 @@ import "dotenv/config";
 import express, { ErrorRequestHandler, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
-// import ApiRoutes from "./routes/waifus.routes";
+import { connectToDatabase } from "./services/database.service";
+import { waifuRouter } from "./routes/waifus.routes";
 
 const server = express();
 
@@ -11,6 +12,15 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(express.static(path.join(__dirname, "/public")));
 
-// server.use(ApiRoutes);
+connectToDatabase()
+  .then(() => {
+    server.use("/", waifuRouter);
 
-server.listen(process.env.PORT);
+    server.listen(process.env.PORT, () => {
+      console.log("Server listening on port " + process.env.PORT);
+    });
+  })
+  .catch((error: Error) => {
+    console.error("Databas connection failed", error);
+    process.exit();
+  });
