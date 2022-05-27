@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { ObjectId } from "mongoDB";
+import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import Waifu from "../models/waifus";
+import sharp from "sharp";
+import { unlink } from "fs/promises";
 
 export const home = (req: Request, res: Response) => {
   res.status(200).json({
@@ -50,6 +52,21 @@ export const getWaifu = async (req: Request, res: Response) => {
 export const createNewWaifu = async (req: Request, res: Response) => {
   try {
     const infos = req.body as Waifu;
+
+    if (req.file) {
+      const filename = `${req.file.filename}`;
+      await sharp(req.file.path)
+        .resize(500)
+        .toFormat("jpeg")
+        .toFile(`./public/midia/${filename}`);
+
+      await unlink(req.file.path);
+      infos.icon = filename;
+    } else {
+      res.status(400).json({ error: "send a icon" });
+      return;
+    }
+
     const result = await collections.waifus?.insertOne(infos);
 
     result

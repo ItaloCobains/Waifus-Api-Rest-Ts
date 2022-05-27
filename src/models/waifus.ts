@@ -6,6 +6,7 @@ export default class Waifu {
     public waifuName: string,
     public waifuInfo: string,
     public waifuAnime: string,
+    public icon: string,
     public id?: ObjectId
   ) {}
 }
