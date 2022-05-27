@@ -92,4 +92,4 @@ After your pull request is merged, you can delete your branch.
 
 ### 🔖 License
 
-Caso queira conferir a licença do projeto, só olhar esse arquivo [LICENSE](./LICENSE)
+If you want to check the project's license, just look at this file [LICENSE](./LICENSE)
