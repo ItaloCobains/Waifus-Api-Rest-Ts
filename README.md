@@ -79,7 +79,7 @@ yarn dev
 
 <a id="como-contribuir"></a>
 
-## 🤔 Como contribuir
+## 🤔 how to contribute
 
 - Fork this repository;
 - Create a branch with your feature: `git checkout -b minha-feature`;
